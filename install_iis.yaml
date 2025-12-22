@@ -15,12 +15,8 @@
         start_mode: auto
         state: started
     
-    - name: update IIS server web page content
-      ansible.windows.win_iis_website:
-        name: "Default Web Site"
-        state: started
-        content: "<html><body><h1>Welcome to IIS on Windows Server 2022!</h1></body></html>"
-
+    #- name: update IIS server web page content
+      
     - name: Ensure IIS management tools are installed
       ansible.windows.win_feature:
         name:

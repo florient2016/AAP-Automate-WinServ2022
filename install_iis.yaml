@@ -34,11 +34,13 @@
         start_mode: auto
         state: started
 
-    - name: test connectivity to IIS management service
-      ansible.windows.win_iis_webapppool_info:
-        name: "DefaultAppPool"
-      register: apppool_info
-    
-    - name: Display IIS App Pool Info
+    - name: test connectivity to IIS server
+      ansible.windows.win_uri:
+        url: http://localhost
+        return_content: yes
+      register: iis_test
+
+    - name: Display IIS test result
       ansible.builtin.debug:
-        var: apppool_info 
+        msg: "{{ iis_test.content }}" 
+        

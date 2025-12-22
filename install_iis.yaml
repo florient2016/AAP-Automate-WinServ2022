@@ -14,9 +14,13 @@
         name: W3SVC
         start_mode: auto
         state: started
-    
-    #- name: update IIS server web page content
-      
+
+    - name: update IIS server web page content
+      ansible.windows.win_iis_website:
+        name: "Default Web Site"
+        state: started
+        content: "<html><body><h1>Welcome to IIS on Windows Server 2022!</h1></body></html>"
+
     - name: Ensure IIS management tools are installed
       ansible.windows.win_feature:
         name:
@@ -29,3 +33,12 @@
         name: WMSVC
         start_mode: auto
         state: started
+
+    - name: test connectivity to IIS management service
+      ansible.windows.win_iis_webapppool_info:
+        name: "DefaultAppPool"
+      register: apppool_info
+    
+    - name: Display IIS App Pool Info
+      ansible.builtin.debug:
+        var: apppool_info 

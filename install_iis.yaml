@@ -1,0 +1,36 @@
+---
+- name: Install and configure IIS on Windows Server 2022
+  hosts: all
+  gather_facts: no
+  tasks:
+
+    - name: Ensure IIS is installed
+      ansible.windows.win_feature:
+        name: Web-Server
+        state: present
+
+    - name: Ensure IIS service is running and set to start automatically
+      ansible.windows.win_service:
+        name: W3SVC
+        start_mode: auto
+        state: started
+    
+    - name: update IIS server web page content
+      ansible.windows.win_iis_website:
+        name: "Default Web Site"
+        state: started
+        content: |
+          "<html><body><h1>Welcome to IIS on Windows Server 2022!</h1></body></html>"
+
+    - name: Ensure IIS management tools are installed
+      ansible.windows.win_feature:
+        name:
+          - Web-Mgmt-Console
+          - Web-Mgmt-Service
+        state: present
+
+    - name: Ensure IIS management service is running
+      ansible.windows.win_service:
+        name: WMSVC
+        start_mode: auto
+        state: started

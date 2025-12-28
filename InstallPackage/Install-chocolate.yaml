@@ -1,8 +1,10 @@
+# Playbook to install chocolatey and packages on Windows Server 2022
+# author: Florient
 - name: install package on windows server 2022
   hosts: all
   tasks:
     - name: Install package name chocolatey
-      ansible.windows.win_chocolatey:
+      chocolatey.chocolatey.win_chocolatey:
         name: chocolatey
         state: present
 
@@ -12,7 +14,7 @@
         state: present
 
     - name: Install putty package using chocolatey
-      ansible.windows.win_chocolatey:
+      chocolatey.chocolatey.win_chocolatey:
         name: putty
         state: present
 

@@ -7,7 +7,7 @@
   vars:
     log_file: C:\Windows\Temp\windows_update.log
     check_update_file: C:\Windows\Temp\check_update.log
-    KB: 'KB5003637'  # Example KB number, replace with the desired one
+    KB: 'KB5010475'  # Example KB number, replace with the desired one
   tasks:
     - name: Query Microsoft update server for available updates
       ansible.windows.win_updates:

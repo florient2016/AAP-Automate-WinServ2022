@@ -43,7 +43,7 @@
           - Updates
         #accept_list:
         #  - "{{ KB }}"
-        register: update_result
+      register: update_result
 
     - name: Reboot if required
       ansible.windows.win_reboot:

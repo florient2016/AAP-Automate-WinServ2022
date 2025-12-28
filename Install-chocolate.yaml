@@ -1,0 +1,24 @@
+- name: install package on windows server 2022
+  hosts: all
+  tasks:
+    - name: Install package name chocolatey
+      ansible.windows.win_chocolatey:
+        name: chocolatey
+        state: present
+
+    - name: Instead you don't have module to install chocolatey
+      chocolatey.chocolatey.win_chocolatey:
+        name: chocolatey
+        state: present
+
+    - name: Install putty package using chocolatey
+      ansible.windows.win_chocolatey:
+        name: putty
+        state: present
+
+    - name: Install wireshark package using chocolatey
+      chocolatey.chocolatey.win_chocolatey:
+        name: wireshark
+        state: present
+
+    

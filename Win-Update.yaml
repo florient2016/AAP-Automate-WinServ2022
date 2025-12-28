@@ -1,0 +1,51 @@
+# Playbook to manage Windows Server updates using Ansible
+# author: Florient
+---
+- name: Manage windows server updates
+  hosts: all
+  vars:
+    log_file: C:\Windows\Temp\windows_update.log
+    check_update_file: C:\Windows\Temp\check_update.log
+    KB: 'KB5003637'  # Example KB number, replace with the desired one
+  tasks:
+    - name: Query Microsoft update server for available updates
+      ansible.windows.win_updates:
+        category_names:
+          - Security Updates
+          - Critical Updates
+        state: searched
+      register: update_search
+
+    - name: Log available updates
+      ansible.builtin.copy:
+        content: "{{ update_search.updates | to_nice_json }}"
+        dest: "{{ check_update_file }}"
+
+    - name: Query Microsoft update servers
+      ansible.windows.win_updates:
+        category_names: Updates
+        state: searched
+        log_path: "{{ log_file }}"
+
+    - name: get available Security update
+      ansible.windows.win_shell: "type {{ log_file }}"
+      register: available_updates
+      
+    - name: Display available updates
+      ansible.builtin.debug:
+        msg: "available Microsoft updates FOUND !"
+      when: "'adding update' in available_updates['stdout']"
+
+    - name: apply updates
+      ansible.windows.win_updates:
+        category_names:
+          - Updates
+        accept_list:
+          - "{{ KB }}"
+        register: update_result
+
+    - name: Reboot if required
+      ansible.windows.win_reboot:
+      when: update_result['reboot_required']
+
+    
